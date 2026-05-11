@@ -13,11 +13,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float disableTime = 0.7f;
     private float lastDisableTime;
     private Rigidbody rb;
-    
-    void Start()
+    public static Transform playerPos;
+    void Awake()
     {
         move = InputSystem.actions.FindAction("Player/Move");
         rb = GetComponent<Rigidbody>();
+        playerPos = transform;
     }
 
     // Update is called once per frame
@@ -44,7 +45,10 @@ public class PlayerController : MonoBehaviour
     {
         Obstacle.OnPlayerHit += TakeDamage;
     }
-
+    private void OnDisable()
+    {
+        Obstacle.OnPlayerHit -= TakeDamage;
+    }
     void TakeDamage()
     {
         disabled = true;

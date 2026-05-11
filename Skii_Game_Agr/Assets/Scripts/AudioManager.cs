@@ -16,7 +16,10 @@ public class AudioManager : MonoBehaviour
     {
         Obstacle.OnPlayerHit += PlayObstacleHitSound;
     }
-    
+    void OnDisable()
+    {
+        Obstacle.OnPlayerHit -= PlayObstacleHitSound;
+    }
     private void PlayObstacleHitSound()
     {
         audioSource.PlayOneShot(obstacleHitSound);
