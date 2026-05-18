@@ -14,10 +14,12 @@ public class PlayerController : MonoBehaviour
     private float lastDisableTime;
     private Rigidbody rb;
     public static Transform playerPos;
+    private Animator animator;
     void Awake()
     {
         move = InputSystem.actions.FindAction("Player/Move");
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         playerPos = transform;
     }
 
@@ -38,7 +40,10 @@ public class PlayerController : MonoBehaviour
                     
             transform.Rotate(0, moveVector.x * rotationSpeed * Time.fixedDeltaTime, 0);
             rb.AddForce(transform.forward * moveSpeed * Time.fixedDeltaTime * speedMultiplier);
+            
         }
+        animator.SetBool("grounded", isGrounded);
+        animator.SetFloat("playerSpeed", rb.velocity.magnitude);
     }
 
     private void OnEnable()

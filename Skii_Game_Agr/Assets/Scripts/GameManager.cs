@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private bool raceFinish = false;
     private bool racing = false;
     [SerializeField] private TMP_Text timer, bestTimeText;
-    [SerializeField] private string bestTimeKey = "BestTimeLVL1";
+    [SerializeField] private string bestTimeKey = "BestTimeKeyLVL1";
 
     private void Start()
     {
@@ -30,9 +30,17 @@ public class GameManager : MonoBehaviour
         SlalomFlag.RacePenalty += RacePenalty;
     }
 
+    private void OnDisable()
+    {
+        FinishGate.FinishRace -= FinishRace;
+        StartGate.StartRace -= StartRace;
+        SlalomFlag.RacePenalty -= RacePenalty;
+    }
+
     void FinishRace()
     {
         racing = false;
+        GameData.Instance.AddLevelTime((float)(raceTime.TotalSeconds / 1000f));
         Debug.Log("Finish Race");
         if (raceTime < bestTime)
         {
